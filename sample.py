@@ -75,7 +75,7 @@ def bot(op):
                         else:
                             cl.acceptGroupInvitation(op.param1)
                             ra = cl.getGroup(op.param1)
-                            cl.sendMessageWithMention(msg.to, ra.creator.mid,"hallo","\nsalken group creator...")
+                            cl.sendMessageWithMention(op.param1, ra.creator.mid,"hallo","\nsalken group creator...")
                             
             if Amid in op.param3:
                 if Setmain["RAautojoin"] == True:
@@ -89,7 +89,7 @@ def bot(op):
                         else:
                             ki.acceptGroupInvitation(op.param1)
                             ra = ki.getGroup(op.param1)
-                            ki.sendMessageWithMention(msg.to, ra.creator.mid,"hallo","\nsalken group creator...")
+                            ki.sendMessageWithMention(op.param1, ra.creator.mid,"hallo","\nsalken group creator...")
                             
             if Bmid in op.param3:
                 if Setmain["RAautojoin"] == True:
@@ -103,7 +103,7 @@ def bot(op):
                         else:
                             kk.acceptGroupInvitation(op.param1)
                             ra = kk.getGroup(op.param1)
-                            kk.sendMessageWithMention(msg.to, ra.creator.mid,"hallo","\nsalken group creator...")
+                            kk.sendMessageWithMention(op.param1, ra.creator.mid,"hallo","\nsalken group creator...")
                             
             if Cmid in op.param3:
                 if Setmain["RAautojoin"] == True:
@@ -117,7 +117,7 @@ def bot(op):
                         else:
                             kc.acceptGroupInvitation(op.param1)
                             ra = kc.getGroup(op.param1)
-                            kc.sendMessageWithMention(msg.to, ra.creator.mid,"hallo","\nsalken group creator...")
+                            kc.sendMessageWithMention(op.param1, ra.creator.mid,"hallo","\nsalken group creator...")
                             
             if Dmid in op.param3:
                 if Setmain["RAautojoin"] == True:
@@ -131,7 +131,15 @@ def bot(op):
                         else:
                             ks.acceptGroupInvitation(op.param1)
                             ra = ks.getGroup(op.param1)
-                            ks.sendMessageWithMention(msg.to, ra.creator.mid,"hallo","\nsalken group creator...")                
+                            ks.sendMessageWithMention(op.param1, ra.creator.mid,"hallo","\nsalken group creator...")
+                            
+        if op.type == 46:
+            if op.param2 in RABots:
+                cl.removeAllMessages()
+                ki.removeAllMessages()
+                kk.removeAllMessages()
+                kc.removeAllMessages()
+                ks.removeAllMessages() 
                 
         if op.type == 26:
             msg = op.message
@@ -161,17 +169,68 @@ def bot(op):
                         return
                     else:
                         
-        #---------------------- Start Command ------------------------#
+            #---------------------- Start Command ------------------------#
                         
                         if text.lower() == "menu":
-                            md = "🔰|RA| Family github version\n\n"
+                            md = "🔰|RA|Family github version\n\n"
                             md += ".cek「@」\n"
                             md += ".gid\n"
                             md += ".yid\n"
                             md += ".me\n"
                             md += ".spbot\n"
+                            md += ".tagall\n"
+                            md += ".pengaturan\n"
+                            md += ".restart\n"
+                            md += ".removechat\n"
+                            md += ".cekmid 「on/off」\n"
+                            md += ".autoread 「on/off」\n"
+                            md += ".join\n"
                             md += ".bye\n"
+                            md += ".kick「@」\n"
                             cl.sendText(msg.to, md)
+                            
+                        elif text.lower() == ".pengaturan":
+                            if msg._from in RASuper:
+                                md = "🔰|RA|Family github version\n\n"
+                                if Setmain["RAautoscan"] == True: md+="✅ Cekmid\n"
+                                else: md+="❎ Cekmid\n"
+                                if Setmain["RAautoread"] == True: md+="✅ Autoread\n"
+                                else: md+="❎ Autoread\n"
+                                cl.sendText(msg.to, md)
+                                
+            #---------------------- On/Off Command -------------------# 
+            
+                        elif text.lower() == ".autoread on":
+                            if msg._from in RASuper:
+                                if Setmain["RAautoread"] == False:
+                                    Setmain["RAautoread"] = True
+                                    cl.sendMessageWithMention(msg.to,msg._from,"","Autoread diaktifkan")
+                                else:
+                                    cl.sendMessageWithMention(msg.to,msg._from,"","Sudah aktif")
+                                    
+                        elif text.lower() == ".autoread off":
+                            if msg._from in RASuper:
+                                if Setmain["RAautoread"] == True:
+                                    Setmain["RAautoread"] = False
+                                    cl.sendMessageWithMention(msg.to,msg._from,"","Autoread dinonaktifkan")
+                                else:
+                                    cl.sendMessageWithMention(msg.to,msg._from,"","Sudah off")
+                                    
+                        elif text.lower() == ".cekmid on":
+                            if msg._from in RASuper:
+                                if Setmain["RAautoscan"] == False:
+                                    Setmain["RAautoscan"] = True
+                                    cl.sendMessageWithMention(msg.to,msg._from,"","Cekmid diaktifkan")
+                                else:
+                                    cl.sendMessageWithMention(msg.to,msg._from,"","Sudah aktif")
+                                    
+                        elif text.lower() == ".cekmid off":
+                            if msg._from in RASuper:
+                                if Setmain["RAautoscan"] == True:
+                                    Setmain["RAautoscan"] = False
+                                    cl.sendMessageWithMention(msg.to,msg._from,"","Cekmid dinonaktifkan")
+                                else:
+                                    cl.sendMessageWithMention(msg.to,msg._from,"","Sudah off")            
                             
             #---------------- Fungsi Command ------------------#
             
@@ -222,15 +281,84 @@ def bot(op):
                             elapsed_time = time.time() - start5
                             ks.sendText(msg.to, "%s" % (elapsed_time))
                             
+                        elif text.lower() == ".tagall":
+                            group = cl.getGroup(msg.to)
+                            nama = [contact.mid for contact in group.members]
+                            k = len(nama)//100
+                            for a in range(k+1):
+                                txt = u''
+                                s=0
+                                b=[]
+                                for i in group.members[a*100 : (a+1)*100]:
+                                    b.append({"S":str(s), "E" :str(s+6), "M":i.mid})
+                                    s += 7
+                                    txt += u'@Sange \n'
+                                cl.sendMessage(to, text=txt, contentMetadata={u'MENTION': json.dumps({'MENTIONEES':b})}, contentType=0)
+                                
+                        elif text.lower() == ".restart":
+                            if msg._from in RASuper:
+                                cl.sendMessageWithMention(msg.to,msg._from,"","Tunggu Sebentar..")
+                                python3 = sys.executable
+                                os.execl(python3, python3, *sys.argv)
+                                
+                        elif text.lower() == ".removechat":
+                            if msg._from in RASuper:
+                                try:
+                                    cl.removeAllMessages(op.param2)
+                                    ki.removeAllMessages(op.param2)
+                                    kk.removeAllMessages(op.param2)
+                                    kc.removeAllMessages(op.param2)
+                                    ks.removeAllMessages(op.param2)
+                                    cl.sendMessageWithMention(msg.to,msg._from,"","Chat bersih...")
+                                except:
+                                    pass        
+                            
+                        elif text.lower() == ".join":
+                            if msg._from in RASuper:
+                                G = cl.getGroup(msg.to)
+                                ginfo = cl.getGroup(msg.to)
+                                G.preventedJoinByTicket = False
+                                cl.updateGroup(G)
+                                invsend = 0
+                                Ticket = cl.reissueGroupTicket(msg.to)
+                                ki.acceptGroupInvitationByTicket(msg.to,Ticket)
+                                kk.acceptGroupInvitationByTicket(msg.to,Ticket)
+                                kc.acceptGroupInvitationByTicket(msg.to,Ticket)
+                                ks.acceptGroupInvitationByTicket(msg.to,Ticket)
+                                G = cl.getGroup(msg.to)
+                                G.preventedJoinByTicket = True
+                                cl.updateGroup(G)
+                                G.preventedJoinByTicket(G)
+                                cl.updateGroup(G)
+                        
                         elif text.lower() == ".bye":
                             if msg._from in RASuper:
                                 ra = cl.getGroup(msg.to)
-                                cl.sendMessageWithMention(msg.to,ra.creator.mid,"Maaf","\n aku keluar dulu ya..")
+                                cl.sendMessageWithMention(msg.to,ra.creator.mid,"Maaf","\naku keluar dulu ya..")
                                 cl.leaveGroup(msg.to)
                                 ki.leaveGroup(msg.to)
                                 kk.leaveGroup(msg.to)
                                 kc.leaveGroup(msg.to)
                                 ks.leaveGroup(msg.to)
+                                
+                        elif ".kick" in text.lower():
+                            if msg._from in RASuper:
+                                key = eval(msg.contentMetadata["MENTION"])
+                                key["MENTIONEES"][0]["M"]
+                                targets = []
+                                for x in key["MENTIONEES"]:
+                                    targets.append(x["M"])
+                                for target in targets:
+                                    if target in RAFamily:
+                                        pass
+                                    else:
+                                        try:
+                                            cl.sendMessageWithMention(msg.to,target,"Maaf","aku kick")
+                                            klist = [ki,kk,kc,ks]
+                                            kicker = random.choice(klist)
+                                            kicker.kickoutFromGroup(msg.to,[target])
+                                        except:
+                                            pass        
                                 
                         elif '/ti/g/' in msg.text.lower():
                             if msg._from in RASuper:
@@ -261,8 +389,7 @@ while True:
         if ops is not None:
             for op in ops:
                 oepoll.setRevision(op.revision)
-                thread1 = threading.Thread(target=bot, args=(op,))
-                thread1.start()
-                thread1.join()
+                thread = threading.Thread(target=bot, args=(op,))
+                thread.start()
     except Exception as e:
         print(e)
